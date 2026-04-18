@@ -143,7 +143,15 @@ export default function ExamTakePage({ params }: { params: Promise<{ id: string 
             <div className="question-number">
               {currentQ.isPassage ? 'Comprehension Passage' : `Question ${getQuestionNumber(currentIdx)} of ${totalQuestionsCount}`}
             </div>
-            <div className="question-text" style={{ fontSize: currentQ.isPassage ? '1.1rem' : '1.25rem', lineHeight: 1.6 }}>
+            <div 
+              className="question-text" 
+              style={{ 
+                fontSize: currentQ.isPassage ? '1.15rem' : '1.25rem', 
+                lineHeight: 1.7,
+                whiteSpace: 'pre-wrap',
+                opacity: 0.95
+              }}
+            >
               {currentQ.text}
             </div>
 
