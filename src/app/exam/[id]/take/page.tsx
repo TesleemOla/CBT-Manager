@@ -100,7 +100,18 @@ export default function ExamTakePage({ params }: { params: Promise<{ id: string 
   if (!exam || questions.length === 0) return <div className="container" style={{ padding: 40 }}><div className="alert alert-error">No questions found.</div></div>;
 
   const currentQ = questions[currentIdx];
-  const progress = Math.round((Object.keys(answers).length / questions.length) * 100);
+  const totalQuestionsList = questions.filter(q => !q.isPassage);
+  const totalQuestionsCount = totalQuestionsList.length;
+
+  const getQuestionNumber = (idx: number) => {
+    if (questions[idx].isPassage) return 'P';
+    const count = questions.slice(0, idx + 1).filter(q => !q.isPassage).length;
+    return count;
+  };
+
+  const progress = totalQuestionsCount > 0 
+    ? Math.round((Object.keys(answers).length / totalQuestionsCount) * 100)
+    : 0;
 
   return (
     <div className="page-wrapper">
@@ -115,7 +126,7 @@ export default function ExamTakePage({ params }: { params: Promise<{ id: string 
 
         <div style={{ flex: 1, margin: '0 40px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-            <span className="text-muted" style={{ fontSize: 10 }}>Progress: {Object.keys(answers).length}/{questions.length} answered</span>
+            <span className="text-muted" style={{ fontSize: 10 }}>Progress: {Object.keys(answers).length}/{totalQuestionsCount} answered</span>
             <span className="text-muted" style={{ fontSize: 10 }}>{progress}%</span>
           </div>
           <div className="progress-bar-wrap"><div className="progress-bar-fill" style={{ width: `${progress}%` }} /></div>
@@ -129,25 +140,31 @@ export default function ExamTakePage({ params }: { params: Promise<{ id: string 
       <div className="exam-layout">
         <div className="exam-content">
           <div className="question-card" style={{ animation: 'fadeIn 0.3s ease' }}>
-            <div className="question-number">Question {currentIdx + 1} of {questions.length}</div>
-            <div className="question-text">{currentQ.text}</div>
-
-            <div className="options-list">
-              {currentQ.options.map((option, i) => {
-                const letter = String.fromCharCode(65 + i);
-                const isSelected = answers[currentQ._id] === option;
-                return (
-                  <div
-                    key={i}
-                    className={`option-item ${isSelected ? 'selected' : ''}`}
-                    onClick={() => handleSelect(currentQ._id, option)}
-                  >
-                    <div className="option-letter">{letter}</div>
-                    <div className="option-text">{option}</div>
-                  </div>
-                );
-              })}
+            <div className="question-number">
+              {currentQ.isPassage ? 'Comprehension Passage' : `Question ${getQuestionNumber(currentIdx)} of ${totalQuestionsCount}`}
             </div>
+            <div className="question-text" style={{ fontSize: currentQ.isPassage ? '1.1rem' : '1.25rem', lineHeight: 1.6 }}>
+              {currentQ.text}
+            </div>
+
+            {!currentQ.isPassage && (
+              <div className="options-list">
+                {currentQ.options.map((option, i) => {
+                  const letter = String.fromCharCode(65 + i);
+                  const isSelected = answers[currentQ._id] === option;
+                  return (
+                    <div
+                      key={i}
+                      className={`option-item ${isSelected ? 'selected' : ''}`}
+                      onClick={() => handleSelect(currentQ._id, option)}
+                    >
+                      <div className="option-letter">{letter}</div>
+                      <div className="option-text">{option}</div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
 
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 32, borderTop: '1px solid var(--border)', paddingTop: 24 }}>
               <button
@@ -182,10 +199,10 @@ export default function ExamTakePage({ params }: { params: Promise<{ id: string 
               {questions.map((q, i) => (
                 <button
                   key={q._id}
-                  className={`q-nav-btn ${i === currentIdx ? 'current' : ''} ${answers[q._id] ? 'answered' : ''}`}
+                  className={`q-nav-btn ${i === currentIdx ? 'current' : ''} ${answers[q._id] ? 'answered' : ''} ${q.isPassage ? 'is-passage' : ''}`}
                   onClick={() => setCurrentIdx(i)}
                 >
-                  {i + 1}
+                  {getQuestionNumber(i)}
                 </button>
               ))}
             </div>

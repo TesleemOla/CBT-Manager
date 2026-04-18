@@ -93,6 +93,7 @@ export interface Question {
   order: number;
   points: number;
   explanation?: string;
+  isPassage?: boolean;
 }
 
 export interface Student {

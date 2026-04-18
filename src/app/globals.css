@@ -461,6 +461,8 @@ tbody tr:hover { background: var(--bg-card-hover); }
 .q-nav-btn:hover { border-color: var(--accent); color: var(--accent); }
 .q-nav-btn.answered { background: var(--accent-dim); color: var(--accent); border-color: var(--accent); }
 .q-nav-btn.current { background: var(--accent); color: #fff; border-color: var(--accent); }
+.q-nav-btn.is-passage { border-style: dashed; border-color: var(--text-muted); }
+.q-nav-btn.is-passage.current { border-style: solid; }
 
 /* ── Progress ───────────────────────────────────────────────────────────── */
 .progress-bar-wrap {
