@@ -62,7 +62,7 @@ export default function AdminDashboard() {
             Admin Dashboard
           </Link>
           <div className="navbar-links">
-            <Link href="/" className="nav-link">Home</Link>
+            <Link href="/admin/audit" className="nav-link">🔍 Audit Tool</Link>
             <button className="btn btn-primary btn-sm" onClick={() => setIsCreateModalOpen(true)}>+ Create Exam</button>
           </div>
         </div>

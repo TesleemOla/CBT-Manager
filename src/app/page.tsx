@@ -35,11 +35,14 @@ export default function HomePage() {
         <p style={{ color: 'var(--text-secondary)', fontSize: 18, maxWidth: 540, margin: '0 auto 32px' }}>
           Take exams online with instant automated grading and real-time results.
         </p>
-        {/* <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-          <Link href="/admin" className="btn btn-secondary btn-lg">
+        <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+          <Link href="/admin" className="btn btn-secondary">
             ⚙️ Admin Panel
           </Link>
-        </div> */}
+          <Link href="/admin/audit" className="btn btn-outline">
+            🔍 Audit Tool
+          </Link>
+        </div>
       </div>
 
       <div className="container" style={{ padding: '48px 24px' }}>
